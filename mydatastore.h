@@ -20,5 +20,9 @@ public:
     std::vector<Product*> search(std::vector<std::string>& terms, int type);
 
     void dump(std::ostream& ofile);
+
+private:
+		std::vector<Product*> products_;
+		std::vector<User*> users_;
 };
 #endif
