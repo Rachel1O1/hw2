@@ -40,7 +40,7 @@ std::set<std::string> parseStringToWords(string rawWords)
 	}
 	if ((rawWords.length() - fInt > 1) && (fInt != -1))
 	{
-		returnMe.insert(rawWords.substr (fInt, (rawWords.length() - fInt)));
+		returnMe.insert(convToLower(rawWords.substr (fInt, (rawWords.length() - fInt))));
 	}
 
 	return returnMe;

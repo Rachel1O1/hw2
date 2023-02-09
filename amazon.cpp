@@ -108,16 +108,17 @@ int main(int argc, char* argv[])
                 bool worked = false;
                 if(ss >> curUser) {
                     if(ss >> hitIndex) {
+												hitIndex = hitIndex - 1;
                         int sss = hits.size();
                         if ((hitIndex >= 0) && (hitIndex < sss))
                         {
                             User* tempUser = ds.getUser(curUser);
                             worked = ds.addToCart(tempUser, hits[hitIndex]);
                             if (!worked) {
-                                cout << "Invalid username" << endl;
+                                cout << "Invalid request" << endl;//invalid index
                             }
                         } else {
-                            cout << "Invalid index" << endl;
+                            cout << "Invalid request" << endl;//invalid username
                         }
                     }
                 }
@@ -132,7 +133,8 @@ int main(int argc, char* argv[])
                         int count = 1;
                         for(Product* cur : *curCart)
                         {
-                            cout << count << ". " << cur->displayString() << endl;
+														cout << "Item " << count << endl;
+                            cout << cur->displayString() << "\n" <<endl;
                             count++;
                         }
                     } else {
