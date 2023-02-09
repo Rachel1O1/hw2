@@ -17,6 +17,12 @@ public:
 
     void addUser(User* u);
 
+    bool addToCart(User* u, Product* p);
+
+    std::vector<Product*> getCart(User* u);
+
+    User* getUser(std::string usernameCur);
+
     std::vector<Product*> search(std::vector<std::string>& terms, int type);
 
     void dump(std::ostream& ofile);
@@ -24,5 +30,6 @@ public:
 private:
 		std::vector<Product*> products_;
 		std::vector<User*> users_;
+    std::vector<std::vector<Product*>> userCarts_;
 };
 #endif

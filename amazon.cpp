@@ -10,6 +10,8 @@
 #include "product_parser.h"
 #include "util.h"
 
+#include "mydatastore.h"
+
 using namespace std;
 struct ProdNameSorter {
     bool operator()(Product* p1, Product* p2) {
@@ -29,7 +31,7 @@ int main(int argc, char* argv[])
      * Declare your derived DataStore object here replacing
      *  DataStore type to your derived type
      ****************/
-    DataStore ds;
+    MyDataStore ds;
 
 
 
@@ -100,7 +102,69 @@ int main(int argc, char* argv[])
                 done = true;
             }
 	    /* Add support for other commands here */
-
+            else if ( cmd == "ADD") {
+                string curUser;
+                int hitIndex;
+                bool worked = false;
+                if(ss >> curUser) {
+                    if(ss >> hitIndex) {
+                        int sss = hits.size();
+                        if ((hitIndex >= 0) && (hitIndex < sss))
+                        {
+                            User* tempUser = ds.getUser(curUser);
+                            worked = ds.addToCart(tempUser, hits[hitIndex]);
+                            if (!worked) {
+                                cout << "Invalid username" << endl;
+                            }
+                        } else {
+                            cout << "Invalid index" << endl;
+                        }
+                    }
+                }
+            }
+            else if ( cmd == "VIEWCART") {
+                string curUser;
+                if(ss >> curUser) {
+                    User* tempUser = ds.getUser(curUser);
+                    if (tempUser != nullptr)
+                    {
+                        std::vector<Product*> curCart = ds.getCart(tempUser);
+                        int count = 1;
+                        for(Product* cur : curCart)
+                        {
+                            cout << count << ". " << cur->displayString() << endl;
+                            count++;
+                        }
+                    } else {
+                        cout << "Invalid username" << endl;
+                    }
+                }
+            }
+            else if ( cmd == "BUYCART") {
+                string curUser;
+                if(ss >> curUser) {
+                    User* tempUser = ds.getUser(curUser);
+                    if (tempUser != nullptr)
+                    {
+                        //item in stock and user has money
+                        std::vector<Product*> curCart = ds.getCart(tempUser);
+                        for(Product* cur : curCart)
+                        {
+                            int tempInt = cur->getQty();
+                            int tempBal = tempUser->getBalance();
+                            int tempCost = cur->getPrice();
+                            if ((tempInt > 0) && (tempBal >= tempCost))
+                            {
+                                cur->subtractQty(1);
+                                tempUser->deductAmount(cur->getPrice());
+                                //remove request from cart;
+                            }
+                        }
+                    } else {
+                        cout << "Invalid username" << endl;
+                    }
+                }
+            }
 
 
 

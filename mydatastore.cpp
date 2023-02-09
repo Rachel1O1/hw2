@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "mydatastore.h"
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -31,7 +32,49 @@ void MyDataStore::addProduct(Product* p)
 
 void MyDataStore::addUser(User* u)
 {
+  std::vector<Product*> newCart;
   users_.push_back(u);
+  userCarts_.push_back(newCart);
+}
+
+bool MyDataStore::addToCart(User* u, Product* p)
+{
+  bool worked = true;
+  auto it = find(users_.begin(), users_.end(), u);
+  if (it != users_.end()) 
+  {
+      int spot = it - users_.begin();
+      userCarts_[spot].push_back(p);
+  } else {
+    worked = false;
+  }
+  return worked;
+}
+
+std::vector<Product*> MyDataStore::getCart(User* u)
+{
+  std::vector<Product*> returnMe;
+  auto it = find(users_.begin(), users_.end(), u);
+  if (it != users_.end()) 
+  {
+      int spot = it - users_.begin();
+      returnMe = userCarts_[spot];
+  }
+  return returnMe;
+}
+
+User* MyDataStore::getUser(std::string usernameCur)
+{
+  for(User* cur : users_)
+  {
+    std::string tempName = cur->getName();
+    int cmp = strcasecmp(tempName.c_str(), usernameCur.c_str());
+    if (cmp == 0)
+    {
+      return cur;
+    }
+  }
+  return nullptr;
 }
 
 std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int type)
