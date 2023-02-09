@@ -4,6 +4,8 @@
 #include <algorithm>
 #include "util.h"
 
+#include <locale> //added for alpha check
+
 using namespace std;
 std::string convToLower(std::string src)
 {
@@ -15,16 +17,33 @@ std::string convToLower(std::string src)
     to a set of words based on the criteria given in the assignment **/
 std::set<std::string> parseStringToWords(string rawWords)
 {
+	std::set<std::string> returnMe;
 
+ 	int fInt = -1;
+	std::locale loc;
+	int comparInt = rawWords.length();
+	for (int i = 0; i < comparInt; i++)
+	{
+		if (std::isalpha(rawWords[i], loc))
+		{
+			if (fInt == -1) 
+			{
+				fInt = i;
+			}
+		} else {
+			if ((i - fInt > 1) && (fInt != -1))
+			{
+				returnMe.insert(convToLower(rawWords.substr (fInt, (i - fInt))));
+			}
+			fInt = -1;
+		}
+	}
+	if ((rawWords.length() - fInt > 1) && (fInt != -1))
+	{
+		returnMe.insert(rawWords.substr (fInt, (rawWords.length() - fInt)));
+	}
 
-
-
-
-
-
-
-
-
+	return returnMe;
 }
 
 /**************************************************
