@@ -128,9 +128,9 @@ int main(int argc, char* argv[])
                     User* tempUser = ds.getUser(curUser);
                     if (tempUser != nullptr)
                     {
-                        std::vector<Product*> curCart = ds.getCart(tempUser);
+                        std::vector<Product*>* curCart = ds.getCart(tempUser);
                         int count = 1;
-                        for(Product* cur : curCart)
+                        for(Product* cur : *curCart)
                         {
                             cout << count << ". " << cur->displayString() << endl;
                             count++;
@@ -147,19 +147,30 @@ int main(int argc, char* argv[])
                     if (tempUser != nullptr)
                     {
                         //item in stock and user has money
-                        std::vector<Product*> curCart = ds.getCart(tempUser);
-                        for(Product* cur : curCart)
-                        {
-                            int tempInt = cur->getQty();
-                            int tempBal = tempUser->getBalance();
-                            int tempCost = cur->getPrice();
-                            if ((tempInt > 0) && (tempBal >= tempCost))
-                            {
-                                cur->subtractQty(1);
-                                tempUser->deductAmount(cur->getPrice());
-                                //remove request from cart;
-                            }
-                        }
+                        std::vector<Product*>* curCart = ds.getCart(tempUser);
+												std::vector<Product*>::iterator it = curCart->begin();
+												while (it != curCart->end())
+												{
+													Product* cur = *it;
+													int tempInt = cur->getQty();
+													double tempBal = tempUser->getBalance();
+													double tempCost = cur->getPrice();
+													if (tempBal >= tempCost)
+													{
+														if (tempInt > 0)
+														{
+															cur->subtractQty(1);
+															tempUser->deductAmount(cur->getPrice());
+															curCart->erase(it);
+														} else {
+															cout << "Not enough stock left." << endl;
+															it++;
+														}
+													} else {
+														cout << "User doesn't have enough $: " << tempBal << " isn't >= than " << tempCost << endl;
+														it++;
+													}
+												}
                     } else {
                         cout << "Invalid username" << endl;
                     }

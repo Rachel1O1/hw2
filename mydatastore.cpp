@@ -10,9 +10,6 @@
 
 using namespace std;
 
-MyDataStore::MyDataStore()
-{}
-
 MyDataStore::~MyDataStore()
 {
   for(Product* cur : products_)
@@ -40,7 +37,7 @@ void MyDataStore::addUser(User* u)
 bool MyDataStore::addToCart(User* u, Product* p)
 {
   bool worked = true;
-  auto it = find(users_.begin(), users_.end(), u);
+  std::vector<User*>::iterator it = find(users_.begin(), users_.end(), u);
   if (it != users_.end()) 
   {
       int spot = it - users_.begin();
@@ -51,16 +48,16 @@ bool MyDataStore::addToCart(User* u, Product* p)
   return worked;
 }
 
-std::vector<Product*> MyDataStore::getCart(User* u)
+std::vector<Product*>* MyDataStore::getCart(User* u)
 {
-  std::vector<Product*> returnMe;
-  auto it = find(users_.begin(), users_.end(), u);
+  //std::vector<Product*> returnMe;
+  std::vector<User*>::iterator it = find(users_.begin(), users_.end(), u);
   if (it != users_.end()) 
   {
       int spot = it - users_.begin();
-      returnMe = userCarts_[spot];
+      return &(userCarts_[spot]);
   }
-  return returnMe;
+  return nullptr;//&returnMe;
 }
 
 User* MyDataStore::getUser(std::string usernameCur)

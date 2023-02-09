@@ -20,10 +20,11 @@ std::set<std::string> Book::keywords() const
 	return returnMe;
 }
 
-/*bool Book::isMatch(std::vector<std::string>& searchTerms) const
+bool Book::isMatch(std::vector<std::string>& searchTerms) const
 {
 	//Allows for a more detailed search beyond simple keywords
-}*/
+	return false;
+}
 
 std::string Book::displayString() const
 {

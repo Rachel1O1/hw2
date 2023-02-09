@@ -10,7 +10,6 @@
 
 class MyDataStore : public DataStore {
 public:
-    MyDataStore();
 		~MyDataStore();
 
     void addProduct(Product* p);
@@ -19,7 +18,7 @@ public:
 
     bool addToCart(User* u, Product* p);
 
-    std::vector<Product*> getCart(User* u);
+    std::vector<Product*>* getCart(User* u);
 
     User* getUser(std::string usernameCur);
 

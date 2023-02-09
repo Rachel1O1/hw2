@@ -13,7 +13,7 @@ public:
 
     std::set<std::string> keywords() const;
 
-    //bool isMatch(std::vector<std::string>& searchTerms) const;
+    bool isMatch(std::vector<std::string>& searchTerms) const;
 
     std::string displayString() const;
 
